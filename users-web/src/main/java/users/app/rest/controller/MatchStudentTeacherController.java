@@ -1,9 +1,6 @@
 package users.app.rest.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import users.dto.MatchStudentTeacherDTO;
 import users.dto.StudentDTO;
 import users.exceptions.AppException;
@@ -12,6 +9,7 @@ import users.service.MatchStudentTeacherService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"*"},allowCredentials = "true")
 @RequestMapping("/api/matched")
 public class MatchStudentTeacherController {
 

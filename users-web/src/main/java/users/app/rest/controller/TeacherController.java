@@ -12,6 +12,7 @@ import users.service.TeacherService;
 import users.specification.TeacherSearchCriteria;
 
 @RestController
+@CrossOrigin(origins = {"*"},allowCredentials = "true")
 @RequestMapping("/api/teachers")
 public class TeacherController {
 

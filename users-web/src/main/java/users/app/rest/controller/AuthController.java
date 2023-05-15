@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import users.config.JwtTokenUtil;
+import users.model.User;
 import users.repository.UserRepository;
 import users.respones.AuthResponse;
 import users.respones.LoginRequest;
@@ -37,6 +38,7 @@ public class AuthController {
 
     @PostMapping("")
     public ResponseEntity<AuthResponse> createAuthenticationToken(@RequestBody LoginRequest loginRequest) throws Exception {
+        System.out.println("login"+loginRequest.getPassword()+loginRequest.getUsername());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
@@ -47,9 +49,13 @@ public class AuthController {
 
         final UserDetails userDetails=userService.loadUserByUsername(loginRequest.getUsername());
 
+        System.out.println(userDetails.getUsername());
+
+        User user=userRepository.findByUsername(userDetails.getUsername());
+
         String jwt=jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        return ResponseEntity.ok(new AuthResponse(jwt,user));
     }
 
 

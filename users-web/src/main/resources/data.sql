@@ -34,7 +34,7 @@ values (1, 1),
        (6, 3);
 
 insert into TEACHERS(USER_ID, NUMBER_OF_STUDENT)
-values (1, 0),
+values (1, 1),
        (2, 1),
        (3, 2);
 
