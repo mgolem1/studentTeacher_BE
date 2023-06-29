@@ -1,12 +1,20 @@
 package users.app.rest.controller;
 
-import io.jsonwebtoken.impl.DefaultClaims;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import users.config.JwtTokenUtil;
 import users.model.User;
@@ -16,12 +24,12 @@ import users.respones.LoginRequest;
 import users.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("")
 public class AuthController {
 
     @Autowired
@@ -36,26 +44,43 @@ public class AuthController {
     @Autowired
     private UserServiceImpl userService;
 
-    @PostMapping("")
-    public ResponseEntity<AuthResponse> createAuthenticationToken(@RequestBody LoginRequest loginRequest) throws Exception {
-        System.out.println("login"+loginRequest.getPassword()+loginRequest.getUsername());
+    @PostMapping("/auth")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
+            authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+
+            final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
+            System.out.println(userDetails.getUsername());
+            final String token = jwtTokenUtil.generateToken(userDetails);
+System.out.println(token);
+            return ResponseEntity.ok(new AuthResponse(token));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
+    }
 
-        final UserDetails userDetails=userService.loadUserByUsername(loginRequest.getUsername());
+    private void authenticate(String username, String password) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    }
 
-        System.out.println(userDetails.getUsername());
+    @RequestMapping(value="/logout", method=RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/";
+    }
 
-        User user=userRepository.findByUsername(userDetails.getUsername());
+    @GetMapping("/api/currentUser")
+    public User currentUser(){
 
-        String jwt=jwtTokenUtil.generateToken(userDetails);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
-        return ResponseEntity.ok(new AuthResponse(jwt,user));
+        User currentUser = userRepository.findByUsername(username);
+
+        return currentUser;
     }
 
 

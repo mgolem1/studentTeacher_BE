@@ -1,16 +1,16 @@
 package users.respones;
 
+import lombok.Getter;
 import users.model.User;
 
+@Getter
 public class AuthResponse {
 
-    private final User user;
 
     private final String jwt;
 
-    public AuthResponse(String jwt,User user) {
+    public AuthResponse(String jwt) {
         this.jwt = jwt;
-        this.user=user;
     }
 
     public String getJwt() {

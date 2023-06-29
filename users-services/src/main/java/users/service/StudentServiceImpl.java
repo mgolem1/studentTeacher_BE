@@ -3,6 +3,7 @@ package users.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,10 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     public Page<StudentDTO> userList(StudentSearchCriteria criteria, Pageable pageable) throws AppException{
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getPrincipal());
 
         return studentRepository.findAll(StudentSearchSpecification.findUsers(criteria), pageable).map(studentMapper::toDTO);
     }

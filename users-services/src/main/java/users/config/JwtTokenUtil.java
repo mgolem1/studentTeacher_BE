@@ -21,15 +21,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.function.Function;
 
-@Service
+@Component
 public class JwtTokenUtil{
 
     public static final String SECRET_KEY = "test";
 
-
-    public String extractUsername(String token){
-        return extractClaim(token,Claims::getSubject);
-    }
 
     public <T> T extractClaim(String token,Function<Claims,T>claimsReslover){
         final Claims claims=extractAllClaims(token);
@@ -44,8 +40,6 @@ public class JwtTokenUtil{
     private String secret="test";
     private int jwtExpirationInMs=0;
     private int refreshExpirationDateInMs=9000000;
-
-
 
 
     public String generateToken(UserDetails userDetails) {
@@ -65,7 +59,7 @@ public class JwtTokenUtil{
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationDateInMs))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
 
     }
@@ -95,6 +89,25 @@ public class JwtTokenUtil{
 
     }
 
+
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+
+    public boolean isTokenExpired(String token) {
+        Date expirationDate = extractExpiration(token);
+        return expirationDate.before(new Date());
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
 
 
 }

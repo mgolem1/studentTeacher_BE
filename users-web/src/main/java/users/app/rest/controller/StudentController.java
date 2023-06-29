@@ -41,8 +41,8 @@ public class StudentController {
 
     //find by id
     @GetMapping("/{id}")
-    public StudentDTO showById(@PathVariable("id") Long id) throws AppException {
-        return studentService.getStudentById(id);
+    public StudentDTO showById(@PathVariable("id") String id) throws AppException {
+        return studentService.getStudentById(Long.parseLong(id));
     }
 
     @PutMapping("/{id}")

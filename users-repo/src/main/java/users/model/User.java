@@ -31,8 +31,6 @@ public class User extends BaseEntity implements UserDetails {
 
     private String lastName;
 
-    private Instant createdDate;
-
     @OneToOne(cascade = CascadeType.MERGE)
     private Address address;
 

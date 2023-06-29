@@ -32,11 +32,8 @@ public class UserServiceImpl implements UserDetailsService {
                     "No user found with username: " + username);
         }
 
-        System.out.println(user.getUsername());
-        final List<GrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach((r) -> authorities.add(new SimpleGrantedAuthority(r.getName())));
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
+        System.out.println(user.getUsername()+"asd");
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),new ArrayList<>());
     }
 
     private List<SimpleGrantedAuthority> getAuthority() {
