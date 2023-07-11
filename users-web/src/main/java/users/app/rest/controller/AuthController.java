@@ -25,6 +25,7 @@ import users.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -63,13 +64,20 @@ System.out.println(token);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
-    @RequestMapping(value="/logout", method=RequestMethod.GET)
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
+    @PostMapping("/userLogout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        // Perform any necessary logout logic
+
+        // Clear the authentication
+        SecurityContextHolder.clearContext();
+
+        // Invalidate the current session
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
         }
-        return "redirect:/";
+
+        return ResponseEntity.ok("Logged out successfully");
     }
 
     @GetMapping("/api/currentUser")
