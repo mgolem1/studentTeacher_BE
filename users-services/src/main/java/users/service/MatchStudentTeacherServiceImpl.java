@@ -9,7 +9,6 @@ import users.exceptions.AppException;
 import users.mapper.StudentMapper;
 import users.mapper.TeacherMapper;
 import users.model.Interest;
-import users.model.Role;
 import users.model.Student;
 import users.model.Teacher;
 import users.repository.StudentRepository;
@@ -58,22 +57,13 @@ public class MatchStudentTeacherServiceImpl implements MatchStudentTeacherServic
 
         List<Student> students = studentRepository.findAll();
         List<Teacher> teachers = teacherRepository.findAll();
-        /*List<Teacher> availableTeacher = new ArrayList<>();
-        for (Teacher t : teachers) {
-            for (int i = 0; i < t.getNumberOfStudent(); i++) {
-                availableTeacher.add(t);
-            }
-        }*/
 
         for (Teacher teacher : teachers) {
             Map<Student, Double> studentList = new HashMap<>();
-
-            if(teacher.getNumberOfStudent()==0 || teacher.getStudentsForMentoring().size()==teacher.getNumberOfStudent()){
+            if (teacher.getNumberOfStudent() == 0 || teacher.getStudentsForMentoring().size() == teacher.getNumberOfStudent()) {
                 continue;
             }
-
             for (Student student : students) {
-System.out.println(student.getInterest().isEmpty());
                 if (student.getMentor() != null || student.getInterest().isEmpty()) {
                     continue;
                 }
@@ -85,7 +75,6 @@ System.out.println(student.getInterest().isEmpty());
                 }
                 studentList.put(student, score);
             }
-
             List<Map.Entry<Student, Double>> list = new ArrayList<>(studentList.entrySet());
 
             Collections.sort(list, new Comparator<Map.Entry<Student, Double>>() {
@@ -106,7 +95,7 @@ System.out.println(student.getInterest().isEmpty());
             }
 
             for (int i = 0; i < teacher.getNumberOfStudent(); i++) {
-                if(i >= sortedStudents.size()){
+                if (i >= sortedStudents.size()) {
                     break;
                 }
                 teacher.getStudentsForMentoring().add(sortedStudents.get(i));
@@ -116,48 +105,6 @@ System.out.println(student.getInterest().isEmpty());
             teacherRepository.save(teacher);
 
         }
-/*
-        for (Student student : students) {
-            // Find the teacher with the highest shared interest score
-
-            Teacher bestTeacher = null;
-            Double bestScore = student.getFinalGrade();
-
-            for (Teacher teacher : teachers) {
-                if (teacher.getNumberOfStudent() == 0 || teacher.getStudentsForMentoring().size() == teacher.getNumberOfStudent()) {
-                    continue;
-                }
-                Double score = 0.0;
-                for (Interest interest : student.getInterest()) {
-                    if (teacher.getInterest().contains(interest)) {
-                        score += 10;
-                    }
-                }
-
-                if (score > bestScore) {
-                    bestTeacher = teacher;
-                    bestScore = score;
-                }
-            }
-
-            // Assign the student to the best teacher if they share at least one interest
-            if (bestTeacher != null) {
-                student.setMentor(bestTeacher);
-                bestTeacher.getStudentsForMentoring().add(student);
-                availableTeacher.remove(bestTeacher);
-            } else {
-                bestTeacher=availableTeacher.get(0);
-                student.setMentor(bestTeacher);
-                bestTeacher.getStudentsForMentoring().add(student);
-                availableTeacher.remove(bestTeacher);
-            }
-
-            teacherRepository.save(bestTeacher);
-            //studentRepository.updateStudentMentor(student.getMentor().getId(), student.getId());
-            studentRepository.save(student);
-
-        }
-*/
         return studentRepository.findAll().stream().map(studentMapper::basicInfoStudent).collect(Collectors.toList());
     }
 

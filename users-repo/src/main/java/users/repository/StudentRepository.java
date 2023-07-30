@@ -14,6 +14,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Page<Student> findAll(Specification<Student> specification, Pageable pageable);
     Optional<Student> findByUsername(String username);
-
     Optional<Student> findById(Long id);
 }

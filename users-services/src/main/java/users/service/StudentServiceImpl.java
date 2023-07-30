@@ -61,20 +61,12 @@ public class StudentServiceImpl implements StudentService {
         return hasRole;
     }
     @Override
-    public Page<StudentDTO> userList(StudentSearchCriteria criteria, Pageable pageable) throws AppException{
-
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getPrincipal());
-
+    public Page<StudentDTO> studentList(StudentSearchCriteria criteria, Pageable pageable) throws AppException{
         return studentRepository.findAll(StudentSearchSpecification.findUsers(criteria), pageable).map(studentMapper::toDTO);
     }
 
     @Override
     public StudentDTO getStudentById(Long id) throws AppException {
-        if(hasRole("STUDENT")){
-            throw new AppException(AppError.UNAUTHORIZED);
-        }
         Optional<Student> studentById = studentRepository.findById(id);
 
         if (!studentById.isPresent()) {
