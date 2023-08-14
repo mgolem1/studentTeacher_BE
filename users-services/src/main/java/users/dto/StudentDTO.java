@@ -28,4 +28,5 @@ public class StudentDTO extends UserDTO{
 
     private Set<Role> roles;
 
+    private String academicPaper;
 }

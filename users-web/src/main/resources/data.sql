@@ -34,10 +34,10 @@ values (1, 1),
 
 
 insert into STUDENTS(USER_ID, DEPARTMENT, FIRST_CHOICE_USER_ID, SECOND_CHOICE_USER_ID, THIRD_CHOICE_USER_ID,
-                     MENTOR_ID, FINAL_GRADE)
-values (4, 'Informatika', 1, 2, 3, null, 3.4),
-       (5, 'Matematika', 2, 1, 3, null, 4.5),
-       (6, 'Fizika', 3, 2, 1, null, 4.0);
+                     MENTOR_ID, FINAL_GRADE,ACADEMIC_PAPER)
+values (4, 'Informatika', 1, 2, 3, null, 3.4,'DIPLOMSKI'),
+       (5, 'Matematika', 2, 1, 3, null, 4.5,'DIPLOMSKI'),
+       (6, 'Fizika', 3, 2, 1, null, 4.0,'ZAVRŠNI');
 
 insert into COURSES(NAME)
 values ('OOP'),

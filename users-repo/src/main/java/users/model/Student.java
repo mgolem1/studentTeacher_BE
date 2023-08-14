@@ -45,4 +45,6 @@ public class Student extends User {
 
     private Double finalGrade;
 
+    private String academicPaper;
+
 }

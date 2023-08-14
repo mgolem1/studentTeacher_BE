@@ -3,7 +3,6 @@ package users.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,9 @@ import users.model.Address;
 import users.model.Interest;
 import users.model.Student;
 import users.model.Teacher;
-import users.repository.RoleRepository;
+import users.repository.InterestRepository;
 import users.repository.StudentRepository;
-import users.repository.UserRepository;
+import users.repository.TeacherRepository;
 import users.specification.StudentSearchCriteria;
 import users.specification.StudentSearchSpecification;
 
@@ -38,14 +37,16 @@ public class StudentServiceImpl implements StudentService {
 
     private final InterestMapper interestMapper;
 
+    private final TeacherRepository teacherRepository;
 
-    private final TeacherMapper teacherMapper;
+    private final InterestRepository interestRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository, StudentMapper studentMapper, InterestMapper interestMapper, TeacherMapper teacherMapper) {
+    public StudentServiceImpl(StudentRepository studentRepository, StudentMapper studentMapper, InterestMapper interestMapper, TeacherRepository teacherRepository, InterestRepository interestRepository) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.interestMapper = interestMapper;
-        this.teacherMapper = teacherMapper;
+        this.teacherRepository = teacherRepository;
+        this.interestRepository = interestRepository;
     }
 
     private boolean hasRole(String role) {
@@ -86,9 +87,20 @@ public class StudentServiceImpl implements StudentService {
             throw new AppException(AppError.STUDENT_NOT_FOUND);
         }
 
-        student.setFirstName(studentDTO.getFirstName());
-        student.setLastName(studentDTO.getLastName());
-        student.setDepartment(studentDTO.getDepartment());
+        if(studentDTO.getFirstName()!=null){
+            student.setFirstName(studentDTO.getFirstName());
+        }
+        if(studentDTO.getLastName()!=null){
+            student.setLastName(studentDTO.getLastName());
+        }
+        if(studentDTO.getDepartment()!=null){
+
+            student.setDepartment(studentDTO.getDepartment());
+        }
+
+        if(studentDTO.getEmail()!=null){
+            student.setEmail(studentDTO.getEmail());
+        }
 
         if(studentDTO.getAddress()!=null){
             if(student.getAddress()==null){
@@ -104,30 +116,27 @@ public class StudentServiceImpl implements StudentService {
         }
 
         if(studentDTO.getFirstChoice()!=null){
-            Teacher teacher=teacherMapper.fromDTO(studentDTO.getFirstChoice());
+            Teacher teacher=teacherRepository.findById(Long.parseLong(studentDTO.getFirstChoice().getId())).get();
             student.setFirstChoice(teacher);
         }
         if(studentDTO.getSecondChoice()!=null){
-            Teacher teacher=teacherMapper.fromDTO(studentDTO.getSecondChoice());
+            Teacher teacher=teacherRepository.findById(Long.parseLong(studentDTO.getSecondChoice().getId())).get();
             student.setFirstChoice(teacher);
         }
         if(studentDTO.getThirdChoice()!=null){
-            Teacher teacher=teacherMapper.fromDTO(studentDTO.getThirdChoice());
-            student.setFirstChoice(teacher);
-        }
-        if(studentDTO.getMentor()!=null){
-            Teacher teacher=teacherMapper.fromDTO(studentDTO.getMentor());
+            Teacher teacher=teacherRepository.findById(Long.parseLong(studentDTO.getThirdChoice().getId())).get();
             student.setFirstChoice(teacher);
         }
 
         if(studentDTO.getInterest()!=null){
             Set<Interest> interest=studentDTO.getInterest().stream().map(i->interestMapper.fromDTO(i)).collect(Collectors.toSet());
             student.setInterest(interest);
+            interestRepository.saveAll(interest);
         }
 
         studentRepository.save(student);
 
-        StudentDTO saveUserDTO = studentMapper.basicInfoStudent(studentRepository.save(student));
+        StudentDTO saveUserDTO = studentMapper.toDTO(student);
 
         return saveUserDTO;
     }
