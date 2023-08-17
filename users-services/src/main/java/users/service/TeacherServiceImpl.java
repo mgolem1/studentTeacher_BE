@@ -116,8 +116,6 @@ public class TeacherServiceImpl implements TeacherService {
 
         Teacher teacher=teacherRepository.findById(id).get();
 
-        System.out.println(teacher.getFirstName());
-
         if(teacher==null){
             throw new AppException(AppError.TEACHER_NOT_FOUND);
         }
@@ -139,7 +137,6 @@ public class TeacherServiceImpl implements TeacherService {
 
             teacher.getAddress().setCity(teacherDTO.getAddress().getCity());
             teacher.getAddress().setStreet(teacherDTO.getAddress().getStreet());
-            teacher.getAddress().setCountry(teacherDTO.getAddress().getCountry());
             teacher.getAddress().setZipCode(teacherDTO.getAddress().getZipCode());
             teacher.getAddress().setStreetNumber(teacherDTO.getAddress().getStreetNumber());
 

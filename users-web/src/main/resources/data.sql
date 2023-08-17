@@ -1,9 +1,10 @@
-insert into ADDRESS(CITY, COUNTRY, STREET, STREET_NUMBER, ZIP_CODE)
-values ('Sinj', 'HR', 'Splitska', '1', '21230'),
-       ('Split', 'HR', 'Cvite Fiskovića', '3', '21000'),
-       ('Šibenik', 'HR', 'Trg Pavla Šubića', '2', '22000'),
-       ('Zadar', 'HR', 'Božidara Petranovića', '8', '23000'),
-       ('Sinj', 'HR', 'Trg Gojka Šuška', '4', '2123');
+insert into ADDRESS(CITY, STREET, STREET_NUMBER, ZIP_CODE)
+values ('Sinj', 'Splitska', '1', '21230'),
+       ('Split', 'Cvite Fiskovića', '3', '21000'),
+       ('Šibenik', 'Trg Pavla Šubića', '2', '22000'),
+       ('Zadar', 'Božidara Petranovića', '8', '23000'),
+       ('Sinj', 'Trg Gojka Šuška', '4', '21230'),
+       ('Sinj', 'Ćirilometodska ul. 2', '2', '10000');
 
 INSERT INTO ROLES(NAME, DESCRIPTION)
 values ('ADMIN', 'ADMIN'),
@@ -14,9 +15,18 @@ insert into USERS(FIRST_NAME, LAST_NAME, ADDRESS_ID, USERNAME, PASSWORD, EMAIL)
 values ('Nina', 'Ninic', 1, 'nina', 'nina', 'nninic@gmail.com'),
        ('Sara', 'Saric', 2, 'sara', 'sara', 'sara@gmail.com'),
        ('Lara', 'Laric', 3, 'lara', 'lara', 'lara@gmail.com'),
-       ('Mirna', 'Golem', 1, 'mirna', 'mirna', 'mirna@gmail.com'),
-       ('Ivo', 'ivic', 1, 'ivo', 'ivo', 'ivo@gmail.com'),
-       ('Niko', 'Nitkovic', 1, 'niko1', 'niko1', 'niko@gmail.com');
+       ('Mirna', 'Mirnic', 1, 'mirna', 'mirna', 'mirna@gmail.com'),
+       ('Ivo', 'Ivic', 1, 'ivo', 'ivo', 'ivo@gmail.com'),
+       ('Niko', 'Nitkovic', 1, 'niko', 'niko', 'niko@gmail.com'),
+       ('Marko', 'Markic', 1, 'marko', 'marko', 'marko@gmail.com'),
+       ('Jozo', 'Jozic', 1, 'jozo', 'jozo', 'jozo@gmail.com'),
+       ('Mira', 'Miric', 1, 'mira', 'mira', 'mira@gmail.com'),
+       ('Saša', 'Sašić', 1, 'sasa', 'sasa', 'sasa@gmail.com'),
+       ('Pero', 'Perić', 1, 'pero', 'pero', 'pero@gmail.com'),
+       ('Maja', 'Majic', 1, 'maja', 'maja', 'maja@gmail.com'),
+       ('Šime', 'Šimić', 1, 'sime', 'sime', 'sime@gmail.com'),
+       ('Sanja', 'Sanjić', 1, 'sanja', 'sanja', 'sanja@gmail.com'),
+       ('Ante', 'Antić', 1, 'ante', 'antic', 'ante@gmail.com');
 
 INSERT INTO USER_ROLES(USER_ID, ROLE_ID)
 values (1, 1),
@@ -25,46 +35,144 @@ values (1, 1),
        (3, 2),
        (4, 3),
        (5, 3),
-       (6, 3);
+       (6, 3),
+       (7, 3),
+       (8, 2),
+       (9, 3),
+       (10, 3),
+       (11, 3),
+       (12, 3),
+       (13, 3),
+       (15, 3),
+       (14, 3);
 
 insert into TEACHERS(USER_ID, NUMBER_OF_STUDENT)
-values (1, 1),
-       (2, 1),
-       (3, 2);
+values (1, 3),
+       (2, 3),
+       (3, 3),
+       (8, 3);
 
 
 insert into STUDENTS(USER_ID, DEPARTMENT, FIRST_CHOICE_USER_ID, SECOND_CHOICE_USER_ID, THIRD_CHOICE_USER_ID,
-                     MENTOR_ID, FINAL_GRADE,ACADEMIC_PAPER)
-values (4, 'Informatika', 1, 2, 3, null, 3.4,'DIPLOMSKI'),
-       (5, 'Matematika', 2, 1, 3, null, 4.5,'DIPLOMSKI'),
-       (6, 'Fizika', 3, 2, 1, null, 4.0,'ZAVRŠNI');
+                     MENTOR_ID, FINAL_GRADE, ACADEMIC_PAPER)
+values (4, 'Informatika', 1, 2, 3, null, 3.4, 'DIPLOMSKI'),
+       (5, 'Matematika', 2, 1, 3, null, 4.5, 'DIPLOMSKI'),
+       (6, 'Fizika', 3, 2, 1, null, 4.0, 'ZAVRŠNI'),
+       (7, 'Informatika', 1, 2, 3, null, 4.4, 'DIPLOMSKI'),
+       (9, 'Matematika', 2, 1, 3, null, 3.5, 'DIPLOMSKI'),
+       (10, 'Fizika', 3, 2, 1, null, 3.0, 'ZAVRŠNI'),
+       (11, 'Informatika', 1, 2, 3, null, 3.8, 'DIPLOMSKI'),
+       (12, 'Matematika', 2, 1, 3, null, 3.5, 'DIPLOMSKI'),
+       (13, 'Informatika', 3, 2, 1, null, 3.9, 'ZAVRŠNI'),
+       (14, 'Matematika', 2, 1, 3, null, 4.5, 'DIPLOMSKI'),
+       (15, 'Informatika', 3, 2, 1, null, 5.0, 'ZAVRŠNI');
 
 insert into COURSES(NAME)
 values ('OOP'),
        ('Uvod u umjetnu inteligenciju'),
        ('PMA'),
-       ('Programiranje mobilnih aplikacija');
+       ('Programiranje mobilnih aplikacija'),
+       ('SPA'),
+       ('Matematika 1'),
+       ('Uvod u podatkovnu zananost'),
+       ('Fizika 1'),
+       ('Arhitektura računala'),
+       ('Praktikum arhitekture računala');
 
 insert into COURSE_TEACHER(COURSE_ID, TEACHER_ID)
 values (1, 1),
        (2, 2),
        (3, 3),
-       (4, 3);
+       (4, 3),
+       (10, 1),
+       (9, 2),
+       (8, 3),
+       (6, 8),
+       (9, 1),
+       (5, 8),
+       (3, 8),
+       (7, 2);
 
 insert into INTEREST(NAME)
 values ('Artificial intelligence (AI)'),
        ('Human-computer interface'),
        ('Game design'),
        ('OOP'),
-       ('Web development');
+       ('Web development'),
+       ('Data Analysis'),
+       ('Machine Learning'),
+       ('Deep Learning'),
+       ('Front-End Development'),
+       ('Backend-End Development:'),
+       ('Web Security'),
+       ('Responsive Design and Mobile Compatibility');
 
 
 INSERT INTO student_interest(student_id, interest_id)
 VALUES (4, 1),
        (4, 3),
-       (5, 2);
+       (4, 7),
+       (4, 4),
+       (5, 2),
+       (5, 9),
+       (5, 10),
+       (5, 3),
+       (6, 2),
+       (6, 12),
+       (6, 9),
+       (6, 6),
+       (7, 11),
+       (7, 10),
+       (7, 7),
+       (7, 4),
+       (9, 9),
+       (9, 7),
+       (9, 1),
+       (9, 2),
+       (10, 3),
+       (10, 5),
+       (10, 7),
+       (10, 8),
+       (11, 6),
+       (11, 5),
+       (11, 11),
+       (12, 5),
+       (12, 6),
+       (12, 12),
+       (12, 2),
+       (13, 3),
+       (13, 2),
+       (13, 9),
+       (13, 4),
+       (14, 11),
+       (14, 4),
+       (14, 5),
+       (14, 3),
+       (15, 5),
+       (15, 10),
+       (15, 6),
+       (15, 4);
 
 insert into TEACHER_INTEREST(TEACHER_ID, INTEREST_ID)
 values (1, 1),
        (1, 3),
-       (3, 2);
+       (1, 5),
+       (1, 6),
+       (1, 10),
+       (1, 7),
+       (2, 6),
+       (2, 9),
+       (2, 8),
+       (2, 11),
+       (3, 2),
+       (2, 3),
+       (3, 7),
+       (3, 5),
+       (3, 8),
+       (3, 9),
+       (3, 6),
+       (8, 5),
+       (8, 7),
+       (8, 4),
+       (8, 11),
+       (8, 12);

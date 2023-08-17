@@ -24,7 +24,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public Page<StudentDTO> getStudents(@PageableDefault(size = 5, direction = Sort.Direction.ASC) Pageable pageable,
+    public Page<StudentDTO> getStudents(@PageableDefault(size = 20, direction = Sort.Direction.ASC) Pageable pageable,
     @RequestParam(required = false) String lastName,
                                       @RequestParam(required = false) String firstName) throws AppException {
         return studentService.studentList(StudentSearchCriteria.builder().firstName(firstName).lastName(lastName).build(), pageable);
@@ -39,14 +39,12 @@ public class StudentController {
     //find by id
     @GetMapping("/{id}")
     public StudentDTO showById(@PathVariable("id") String id) throws AppException {
-        System.out.println("poid");
         return studentService.getStudentById(Long.parseLong(id));
     }
 
     @PutMapping("/{id}")
     @ResponseBody
     private StudentDTO updateStudent(@PathVariable("id") Long id, @RequestBody StudentDTO student) throws AppException {
-        System.out.println(id+"aa"+student.getFirstName());
         return studentService.updateStudent(id, student);
     }
 }

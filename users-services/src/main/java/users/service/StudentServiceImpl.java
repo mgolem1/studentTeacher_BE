@@ -109,7 +109,6 @@ public class StudentServiceImpl implements StudentService {
 
             student.getAddress().setCity(studentDTO.getAddress().getCity());
             student.getAddress().setStreet(studentDTO.getAddress().getStreet());
-            student.getAddress().setCountry(studentDTO.getAddress().getCountry());
             student.getAddress().setZipCode(studentDTO.getAddress().getZipCode());
             student.getAddress().setStreetNumber(studentDTO.getAddress().getStreetNumber());
 
@@ -121,24 +120,21 @@ public class StudentServiceImpl implements StudentService {
         }
         if(studentDTO.getSecondChoice()!=null){
             Teacher teacher=teacherRepository.findById(Long.parseLong(studentDTO.getSecondChoice().getId())).get();
-            student.setFirstChoice(teacher);
+            student.setSecondChoice(teacher);
         }
         if(studentDTO.getThirdChoice()!=null){
             Teacher teacher=teacherRepository.findById(Long.parseLong(studentDTO.getThirdChoice().getId())).get();
-            student.setFirstChoice(teacher);
+            student.setThirdChoice(teacher);
         }
 
         if(studentDTO.getInterest()!=null){
+            student.getInterest().clear();
             Set<Interest> interest=studentDTO.getInterest().stream().map(i->interestMapper.fromDTO(i)).collect(Collectors.toSet());
             student.setInterest(interest);
             interestRepository.saveAll(interest);
         }
 
-        studentRepository.save(student);
-
-        StudentDTO saveUserDTO = studentMapper.toDTO(student);
-
-        return saveUserDTO;
+        return studentMapper.toDTO(studentRepository.save(student));
     }
 
     @Override

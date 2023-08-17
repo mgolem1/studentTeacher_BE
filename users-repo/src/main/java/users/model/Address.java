@@ -19,7 +19,4 @@ public class Address extends BaseEntity {
     private String zipCode;
 
     private String city;
-
-    private String country;
-
 }

@@ -44,7 +44,6 @@ public class TeacherController {
     @PutMapping("/{id}")
     @ResponseBody
     private TeacherDTO updateStudent(@PathVariable("id") Long id, @RequestBody TeacherDTO teacherDTO) throws AppException {
-        System.out.println(id+"aa"+teacherDTO.getFirstName());
         return teacherService.updateTeacher(id, teacherDTO);
     }
 }
