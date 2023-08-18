@@ -4,7 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import users.app.rest.utils.ResponseMessage;
 import users.dto.StudentDTO;
 import users.dto.TeacherDTO;
 import users.exceptions.AppException;
@@ -23,7 +25,7 @@ public class TeacherController {
     }
 
     @GetMapping
-    public Page<TeacherDTO> getTeachers(@PageableDefault(size = 5, direction = Sort.Direction.ASC) Pageable pageable,
+    public Page<TeacherDTO> getTeachers(@PageableDefault(size = 20, direction = Sort.Direction.ASC) Pageable pageable,
                                          @RequestParam(required = false) String lastName,
                                          @RequestParam(required = false) String firstName)  throws AppException{
         return teacherService.teacherList(TeacherSearchCriteria.builder().firstName(firstName).lastName(lastName).build(), pageable);
@@ -45,5 +47,11 @@ public class TeacherController {
     @ResponseBody
     private TeacherDTO updateStudent(@PathVariable("id") Long id, @RequestBody TeacherDTO teacherDTO) throws AppException {
         return teacherService.updateTeacher(id, teacherDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<ResponseMessage<String>> deleteTeacher(@PathVariable("id") Long id) throws AppException {
+        teacherService.deleteTeacher(id);
+        return ResponseEntity.ok(new ResponseMessage<>(""));
     }
 }

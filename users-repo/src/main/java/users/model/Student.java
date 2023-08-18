@@ -29,18 +29,20 @@ public class Student extends User {
 
     private String department;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne
+    @JoinColumn(name = "first_choice_TEACHER_id")
     private Teacher firstChoice;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne
+    @JoinColumn(name = "second_choice_teacher_id")
     private Teacher secondChoice;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne
+    @JoinColumn(name = "third_choice_teacher_id")
     private Teacher thirdChoice;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "mentor_id")
-    @JsonIgnore
     private Teacher mentor;
 
     private Double finalGrade;

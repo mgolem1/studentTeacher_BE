@@ -1,7 +1,9 @@
 package users.dto;
 
-import lombok.*;
-import users.model.Address;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import users.model.Role;
 
 import java.util.Set;
@@ -10,7 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDTO extends UserDTO{
+public class StudentDTO extends UserDTO {
 
     private Set<InterestDTO> interest;
 

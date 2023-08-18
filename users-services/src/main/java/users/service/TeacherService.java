@@ -20,4 +20,6 @@ public interface TeacherService {
 
     TeacherDTO updateTeacher(Long id,TeacherDTO teacherDTO)throws AppException;
 
+    void deleteTeacher(Long id) throws AppException;
+
 }

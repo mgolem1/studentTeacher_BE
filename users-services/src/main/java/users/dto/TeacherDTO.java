@@ -1,5 +1,6 @@
 package users.dto;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
 import lombok.*;
 import users.model.Role;
 import users.model.Student;
@@ -21,5 +22,6 @@ public class TeacherDTO extends UserDTO{
     private Set<Student> studentsForMentoring;
 
     private Set<Role> roles;
+
 
 }

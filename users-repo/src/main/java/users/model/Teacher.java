@@ -30,13 +30,13 @@ public class Teacher extends User {
     @JsonIgnore
     private Set<Interest> interest = new HashSet<>();
 
-    @ManyToMany(mappedBy = "teachers")
+    @ManyToMany(mappedBy = "teachers", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Courses> courses = new HashSet<>();
 
     private Integer numberOfStudent;
 
-    @OneToMany(mappedBy = "mentor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Student> studentsForMentoring = new HashSet<>();
 

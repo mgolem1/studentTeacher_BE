@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import users.model.Student;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +16,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Page<Student> findAll(Specification<Student> specification, Pageable pageable);
     Optional<Student> findByUsername(String username);
     Optional<Student> findById(Long id);
+
+    List<Student> findAllByFirstChoiceId(Long id);
+    List<Student> findAllBySecondChoiceId(Long id);
+    List<Student> findAllByThirdChoiceId(Long id);
+
+    List<Student> findAllByMentorId(Long id);
+
 }
