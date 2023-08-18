@@ -18,4 +18,6 @@ public interface StudentService {
 
     StudentDTO createStudent(StudentDTO student) throws AppException;
 
+    void deleteStudent(Long id) throws AppException;
+
 }

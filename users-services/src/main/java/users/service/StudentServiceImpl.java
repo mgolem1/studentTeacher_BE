@@ -166,4 +166,15 @@ public class StudentServiceImpl implements StudentService {
 
         return studentMapper.toDTO(newStudent);
     }
+
+    @Override
+    public void deleteStudent(Long id) throws AppException {
+        Optional<Student> studentOptional = studentRepository.findById(id);
+
+        if (!studentOptional.isPresent()) {
+            throw new AppException(AppError.ALREADY_EXIST);
+        }
+        studentRepository.delete(studentOptional.get());
+
+    }
 }
