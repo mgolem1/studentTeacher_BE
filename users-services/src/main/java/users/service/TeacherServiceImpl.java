@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import users.dto.TeacherDTO;
 import users.exceptions.AppError;
 import users.exceptions.AppException;
@@ -76,11 +77,10 @@ public class TeacherServiceImpl implements TeacherService {
         Optional<Teacher> teacherById = teacherRepository.findById(id);
 
         if (!teacherById.isPresent()) {
-            throw new AppException(AppError.STUDENT_NOT_FOUND);
+            throw new AppException(AppError.TEACHER_NOT_FOUND);
         }
 
-        TeacherDTO teacherDTO = teacherMapper.toDTO(teacherRepository.save(teacherById.get()));
-        return teacherDTO;
+        return teacherMapper.toDTO(teacherById.get());
     }
 
     @Override
@@ -114,6 +114,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional
     public TeacherDTO updateTeacher(Long id, TeacherDTO teacherDTO) throws AppException {
         Teacher teacher = teacherRepository.findById(id).get();
 
@@ -148,12 +149,16 @@ public class TeacherServiceImpl implements TeacherService {
 
             List<Interest> interest = teacherDTO.getInterest().stream().map(i -> interestRepository.findById(Long.parseLong(i.getId())).get()).collect(Collectors.toList());
             teacher.getInterest().addAll(interest);
+
+            interestRepository.saveAll(interest);
         }
 
         if (teacherDTO.getCourses() != null) {
             teacher.getCourses().clear();
             List<Courses> courses = teacherDTO.getCourses().stream().map(c -> courseRepository.findById(Long.parseLong(c.getId())).get()).collect(Collectors.toList());
             teacher.getCourses().addAll(courses);
+
+            courseRepository.saveAll(courses);
         }
 
         teacherRepository.save(teacher);

@@ -17,12 +17,7 @@ public class Courses extends BaseEntity{
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "course_teacher",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "teacher_id")
-    )
+    @ManyToMany(mappedBy = "courses")
     //@JsonManagedReference(value = "courses")
     private Set<Teacher> teachers = new HashSet<>();
 }

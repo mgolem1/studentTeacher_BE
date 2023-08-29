@@ -30,7 +30,12 @@ public class Teacher extends User {
     @JsonIgnore
     private Set<Interest> interest = new HashSet<>();
 
-    @ManyToMany(mappedBy = "teachers", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "course_teacher",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
     @JsonIgnore
     private Set<Courses> courses = new HashSet<>();
 
